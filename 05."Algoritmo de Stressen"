@@ -1,0 +1,43 @@
+import time
+def multiplicar_strassen(A, B):
+    a, b = A[0][0], A[0][1]
+    c, d = A[1][0], A[1][1]
+    
+    e, f = B[0][0], B[0][1]
+    g, h = B[1][0], B[1][1]
+
+    M1 = (a + d) * (e + h)
+    M2 = (c + d) * e
+    M3 = a * (f - h)
+    M4 = d * (g - e)
+    M5 = (a + b) * h
+    M6 = (c - a) * (e + f)
+    M7 = (b - d) * (g + h)
+
+    return [
+        [M1 + M4 - M5 + M7, M3 + M5],
+        [M2 + M4, M1 - M2 + M3 + M6]
+    ]
+
+def Fib3(n):
+    if n == 0:
+        return 0
+    
+    R = [[1, 0], [0, 1]]  
+    M = [[1, 1], [1, 0]]
+
+    for i in range(n - 1):
+        R = multiplicar_strassen(R, M)
+    
+    return R[0][0]
+
+n = int(input("inserta n:"))
+
+start_time = time.time()
+
+resultado = Fib3(n)
+
+end_time = time.time()
+
+print("Fib(", n, ") =", resultado)
+print("Tiempo:", end_time - start_time, "s")
