@@ -1,0 +1,26 @@
+import time
+
+def insercion(A):
+    for i in range(1, len(A)):
+        aux = A[i]
+        j = i
+
+        while j > 0 and A[j - 1] > aux:
+            A[j] = A[j - 1]
+            j -= 1
+        A[j] = aux
+N = 1000
+mejor = list(range(1, N + 1))
+
+peor = list(range(N, 0, -1))
+inicio = time.time()
+insercion(mejor)
+fin = time.time()
+
+print("Tiempo mejor caso:", fin - inicio, "segundos")
+
+inicio = time.time()
+insercion(peor)
+fin = time.time()
+
+print("Tiempo peor caso:", fin - inicio, "segundos")
