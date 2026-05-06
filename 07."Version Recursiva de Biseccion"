@@ -1,11 +1,9 @@
 def raiz_rec(x, inf, sup, epsilon):
     m = (inf + sup) / 2.0
     
-    # Caso base
     if abs(m**2 - x) < epsilon:
         return m
     
-    # Caso recursivo
     if m**2 < x:
         return raiz_rec(x, m, sup, epsilon)
     else:
