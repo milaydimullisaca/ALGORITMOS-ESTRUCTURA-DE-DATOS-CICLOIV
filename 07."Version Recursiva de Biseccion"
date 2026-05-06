@@ -1,0 +1,20 @@
+def raiz_cuadrada_rec(x, inf, sup, epsilon):
+    m = (inf + sup) / 2.0
+    
+    # Caso base
+    if abs(m**2 - x) < epsilon:
+        return m
+    
+    # Caso recursivo
+    if m**2 < x:
+        return raiz_cuadrada_rec(x, m, sup, epsilon)
+    else:
+        return raiz_cuadrada_rec(x, inf, m, epsilon)
+
+x = 36
+epsilon = 0.01
+
+# Intervalo inicial para x ≥ 1
+resultado = raiz_cuadrada_rec(x, 0, x, epsilon)
+
+print(resultado, "es aproximadamente la raíz cuadrada de", x)
