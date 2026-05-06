@@ -1,0 +1,16 @@
+x = 0.25
+epsilon = 0.01
+
+inf = x      # usar x
+sup = 1      # límite superior fijo
+
+m = (inf + sup) / 2.0
+
+while abs(m**2 - x) >= epsilon:
+    if m**2 < x:
+        inf = m
+    else:
+        sup = m
+    m = (inf + sup) / 2.0
+
+print(m, "es aproximadamente la raíz cuadrada de", x)
