@@ -1,8 +1,8 @@
 x = 0.25
 epsilon = 0.01
 
-inf = x      # usar x
-sup = 1      # límite superior fijo
+inf = x     
+sup = 1     
 
 m = (inf + sup) / 2.0
 
