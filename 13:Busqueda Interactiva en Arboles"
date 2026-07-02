@@ -1,0 +1,53 @@
+#include <iostream>
+using namespace std;
+
+struct Nodo{
+    int Clave;
+    Nodo *Izquierda;
+    Nodo *Derecha;
+};
+
+class ABB{
+public:
+    Nodo *Raiz;
+
+    ABB(){
+        Raiz = NULL;
+    }
+
+    Nodo* BusquedaIterativa(int x);
+};
+Nodo* ABB::BusquedaIterativa(int x)
+{
+    Nodo *nodo = Raiz;
+
+    while(nodo != NULL)
+    {
+        if(nodo->Clave == x)
+            return nodo;
+
+        if(x < nodo->Clave)
+            nodo = nodo->Izquierda;
+        else
+            nodo = nodo->Derecha;
+    }
+    return NULL;
+}
+
+int main()
+{
+    ABB arbol;
+
+    arbol.Raiz = new Nodo{50,NULL,NULL};
+    arbol.Raiz->Izquierda = new Nodo{30,NULL,NULL};
+    arbol.Raiz->Derecha = new Nodo{70,NULL,NULL};
+
+    Nodo *p = arbol.BusquedaIterativa(70);
+
+    if(p != NULL)
+        cout << "Encontrado: " << p->Clave;
+    else
+        cout << "No encontrado";
+
+    return 0;
+}
