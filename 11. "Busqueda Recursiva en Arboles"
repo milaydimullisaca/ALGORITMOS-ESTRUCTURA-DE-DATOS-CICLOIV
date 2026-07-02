@@ -1,0 +1,49 @@
+#include <iostream>
+using namespace std;
+
+struct Nodo{
+    int Clave;
+    Nodo *Izquierda;
+    Nodo *Derecha;
+};
+
+class ABB{
+public:
+    Nodo *Raiz;
+
+    ABB(){
+        Raiz = NULL;
+    }
+
+    Nodo* BusquedaRecursiva(int x, Nodo *nodo);
+};
+
+Nodo* ABB::BusquedaRecursiva(int x, Nodo *nodo)
+{
+    if (nodo == NULL || nodo->Clave == x)
+        return nodo;
+
+    if (x < nodo->Clave)
+        return BusquedaRecursiva(x, nodo->Izquierda);
+
+    return BusquedaRecursiva(x, nodo->Derecha);
+}
+
+int main()
+{
+    ABB arbol;
+
+    // Crear el árbol manualmente
+    arbol.Raiz = new Nodo{50, NULL, NULL};
+    arbol.Raiz->Izquierda = new Nodo{30, NULL, NULL};
+    arbol.Raiz->Derecha = new Nodo{70, NULL, NULL};
+
+    Nodo *resultado = arbol.BusquedaRecursiva(30, arbol.Raiz);
+
+    if(resultado != NULL)
+        cout << "Encontrado: " << resultado->Clave;
+    else
+        cout << "No encontrado";
+
+    return 0;
+}
