@@ -1,0 +1,174 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <random>
+#include <chrono>
+#include <fstream>
+#include <string>
+
+using namespace std;
+using namespace chrono;
+
+void merge(vector<int>& a, vector<int>& aux,
+           int izquierda, int medio, int derecha) {
+    int i = izquierda;
+    int j = medio + 1;
+    int k = izquierda;
+
+    while (i <= medio && j <= derecha) {
+        if (a[i] <= a[j]) {
+            aux[k++] = a[i++];
+        } else {
+            aux[k++] = a[j++];
+        }
+    }
+
+    while (i <= medio) {
+        aux[k++] = a[i++];
+    }
+
+    while (j <= derecha) {
+        aux[k++] = a[j++];
+    }
+
+    for (int p = izquierda; p <= derecha; p++) {
+        a[p] = aux[p];
+    }
+}
+
+void mergeSort(vector<int>& a, vector<int>& aux,
+               int izquierda, int derecha) {
+    if (izquierda >= derecha) {
+        return;
+    }
+
+    int medio = izquierda + (derecha - izquierda) / 2;
+
+    mergeSort(a, aux, izquierda, medio);
+    mergeSort(a, aux, medio + 1, derecha);
+    merge(a, aux, izquierda, medio, derecha);
+}
+
+int particionar(vector<int>& a, int izquierda, int derecha) {
+    int pivote = a[derecha];
+    int i = izquierda - 1;
+
+    for (int j = izquierda; j < derecha; j++) {
+        if (a[j] <= pivote) {
+            i++;
+            swap(a[i], a[j]);
+        }
+    }
+
+    swap(a[i + 1], a[derecha]);
+    return i + 1;
+}
+
+void quickSort(vector<int>& a, int izquierda, int derecha) {
+    if (izquierda < derecha) {
+        int p = particionar(a, izquierda, derecha);
+
+        quickSort(a, izquierda, p - 1);
+        quickSort(a, p + 1, derecha);
+    }
+}
+
+double medirMergeSort(const vector<int>& original) {
+    vector<int> a = original;
+    vector<int> aux(a.size());
+
+    auto inicio = steady_clock::now();
+
+    if (!a.empty()) {
+        mergeSort(a, aux, 0, static_cast<int>(a.size()) - 1);
+    }
+
+    auto fin = steady_clock::now();
+
+    if (!is_sorted(a.begin(), a.end())) {
+        throw runtime_error("Error en Merge Sort");
+    }
+
+    return duration<double, milli>(fin - inicio).count();
+}
+
+double medirQuickSort(const vector<int>& original) {
+    vector<int> a = original;
+
+    auto inicio = steady_clock::now();
+
+    if (!a.empty()) {
+        quickSort(a, 0, static_cast<int>(a.size()) - 1);
+    }
+
+    auto fin = steady_clock::now();
+
+    if (!is_sorted(a.begin(), a.end())) {
+        throw runtime_error("Error en Quick Sort");
+    }
+
+    return duration<double, milli>(fin - inicio).count();
+}
+
+int main() {
+    vector<int> tamanos = {
+        1000, 5000, 10000, 50000, 100000
+    };
+
+    const int repeticiones = 5;
+
+    mt19937 generador(2026);
+
+    ofstream archivo("resultados.csv");
+
+    if (!archivo.is_open()) {
+        cerr << "No se pudo crear resultados.csv" << endl;
+        return 1;
+    }
+
+    cout << "Benchmarking de Merge Sort y Quick Sort" << endl;
+    cout << "Tiempos expresados en milisegundos" << endl;
+
+    archivo << "n,repeticion,algoritmo,tiempo_ms\n";
+
+    for (int n : tamanos) {
+        vector<int> original(n);
+
+        for (int i = 0; i < n; i++) {
+            original[i] = i;
+        }
+
+        shuffle(original.begin(), original.end(), generador);
+
+        double sumaMerge = 0.0;
+        double sumaQuick = 0.0;
+
+        for (int r = 1; r <= repeticiones; r++) {
+            double tiempoMerge = medirMergeSort(original);
+            double tiempoQuick = medirQuickSort(original);
+
+            sumaMerge += tiempoMerge;
+            sumaQuick += tiempoQuick;
+
+            archivo << n << "," << r << ",Merge Sort,"
+                    << tiempoMerge << "\n";
+
+            archivo << n << "," << r << ",Quick Sort,"
+                    << tiempoQuick << "\n";
+        }
+
+        cout << "\nElementos: " << n << endl;
+
+        cout << "Merge Sort promedio: "
+             << sumaMerge / repeticiones << " ms" << endl;
+
+        cout << "Quick Sort promedio: "
+             << sumaQuick / repeticiones << " ms" << endl;
+    }
+
+    archivo.close();
+
+    cout << "\nResultados guardados en resultados.csv" << endl;
+
+    return 0;
+}
