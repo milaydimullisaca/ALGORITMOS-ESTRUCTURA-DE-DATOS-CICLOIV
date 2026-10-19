@@ -1,1 +1,48 @@
 
+
+#include <stdio.h>
+
+#define MAX 1000
+#define INF 1000000000
+
+int main(void) {
+    int n, i, j;
+    int costo[MAX + 1][MAX + 1];
+    int dp[MAX + 1];
+
+    printf("Cantidad de puestos: ");
+
+    if (scanf("%d", &n) != 1 || n < 2 || n > MAX) {
+        printf("Cantidad no valida.\n");
+        return 1;
+    }
+
+    for (i = 1; i <= n; i++) {
+        for (j = i + 1; j <= n; j++) {
+            printf("Costo del puesto %d al %d: ", i, j);
+
+            if (scanf("%d", &costo[i][j]) != 1 ||
+                costo[i][j] < 0) {
+                printf("Costo no valido.\n");
+                return 1;
+            }
+        }
+    }
+
+    dp[1] = 0;
+
+    for (j = 2; j <= n; j++) {
+        dp[j] = INF;
+
+        for (i = 1; i < j; i++) {
+            if (dp[i] != INF &&
+                dp[i] + costo[i][j] < dp[j]) {
+                dp[j] = dp[i] + costo[i][j];
+            }
+        }
+    }
+
+    printf("Costo minimo: %d\n", dp[n]);
+
+    return 0;
+}
