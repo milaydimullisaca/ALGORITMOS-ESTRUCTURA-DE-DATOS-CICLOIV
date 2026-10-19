@@ -1,0 +1,53 @@
+
+
+#include <stdio.h>
+
+#define MAX 1000
+
+int main(void) {
+    int n, i;
+    int F[MAX + 1];
+    int dp[MAX + 1];
+
+    printf("Cantidad de familias: ");
+
+    if (scanf("%d", &n) != 1 || n < 1 || n > MAX) {
+        printf("Cantidad no valida.\n");
+        return 1;
+    }
+
+    for (i = 1; i <= n; i++) {
+        printf("Diversion de la familia %d: ", i);
+
+        if (scanf("%d", &F[i]) != 1 || F[i] < 0) {
+            printf("Valor no valido.\n");
+            return 1;
+        }
+    }
+
+    dp[0] = 0;
+    dp[1] = F[1];
+
+    if (n >= 2) {
+        dp[2] = dp[1];
+
+        if (F[2] > dp[2]) dp[2] = F[2];
+        if (F[1] + F[2] > dp[2]) {
+            dp[2] = F[1] + F[2];
+        }
+    }
+
+    for (i = 3; i <= n; i++) {
+        int a = dp[i - 1];
+        int b = dp[i - 2] + F[i];
+        int c = dp[i - 3] + F[i - 1] + F[i];
+
+        dp[i] = a;
+        if (b > dp[i]) dp[i] = b;
+        if (c > dp[i]) dp[i] = c;
+    }
+
+    printf("Diversion maxima: %d\n", dp[n]);
+
+    return 0;
+}
