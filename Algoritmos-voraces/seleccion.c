@@ -1,0 +1,46 @@
+#include <stdio.h>
+
+#define MAX 1000
+
+int main(void) {
+    int a[MAX];
+    int n;
+    int i, j, minimo, auxiliar;
+
+    printf("ORDENAMIENTO POR SELECCION\n");
+    printf("Cantidad de elementos: ");
+    scanf("%d", &n);
+
+    if (n < 1 || n > MAX) {
+        printf("Cantidad no valida.\n");
+        return 1;
+    }
+
+    for (i = 0; i < n; i++) {
+        printf("Elemento %d: ", i + 1);
+        scanf("%d", &a[i]);
+    }
+
+    for (i = 0; i < n - 1; i++) {
+        minimo = i;
+
+        for (j = i + 1; j < n; j++) {
+            if (a[j] < a[minimo]) {
+                minimo = j;
+            }
+        }
+
+        auxiliar = a[i];
+        a[i] = a[minimo];
+        a[minimo] = auxiliar;
+    }
+
+    printf("\nArreglo ordenado: ");
+
+    for (i = 0; i < n; i++) {
+        printf("%d ", a[i]);
+    }
+
+    printf("\n");
+    return 0;
+}
