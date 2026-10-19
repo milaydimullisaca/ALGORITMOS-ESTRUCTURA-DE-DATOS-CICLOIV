@@ -1,0 +1,50 @@
+
+#include <stdio.h>
+
+#define MAX 1000
+
+int main(void) {
+    int a[MAX];
+    int n, i, j, auxiliar;
+    int intercambios;
+
+    printf("ORDENAMIENTO POR BURBUJA\n");
+    printf("Cantidad de elementos: ");
+    scanf("%d", &n);
+
+    if (n < 1 || n > MAX) {
+        printf("Cantidad no valida.\n");
+        return 1;
+    }
+
+    for (i = 0; i < n; i++) {
+        printf("Elemento %d: ", i + 1);
+        scanf("%d", &a[i]);
+    }
+
+    for (i = 0; i < n - 1; i++) {
+        intercambios = 0;
+
+        for (j = 0; j < n - i - 1; j++) {
+            if (a[j] > a[j + 1]) {
+                auxiliar = a[j];
+                a[j] = a[j + 1];
+                a[j + 1] = auxiliar;
+                intercambios = 1;
+            }
+        }
+
+        if (intercambios == 0) {
+            break;
+        }
+    }
+
+    printf("\nArreglo ordenado: ");
+
+    for (i = 0; i < n; i++) {
+        printf("%d ", a[i]);
+    }
+
+    printf("\n");
+    return 0;
+}
