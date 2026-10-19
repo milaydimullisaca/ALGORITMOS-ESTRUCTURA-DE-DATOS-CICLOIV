@@ -1,0 +1,52 @@
+
+#include <stdio.h>
+
+long long absoluto(long long n) {
+    if (n < 0) {
+        return -n;
+    }
+
+    return n;
+}
+
+long long mcd(long long a, long long b) {
+    if (b == 0) {
+        return a;
+    }
+
+    return mcd(b, a % b);
+}
+
+int main(void) {
+    long long a, b, resultado;
+
+    printf("MAXIMO COMUN DIVISOR RECURSIVO\n");
+
+    printf("Ingrese el primer numero: ");
+    if (scanf("%lld", &a) != 1 ||
+        a == -9223372036854775807LL - 1) {
+        printf("Numero no valido.\n");
+        return 1;
+    }
+
+    printf("Ingrese el segundo numero: ");
+    if (scanf("%lld", &b) != 1 ||
+        b == -9223372036854775807LL - 1) {
+        printf("Numero no valido.\n");
+        return 1;
+    }
+
+    a = absoluto(a);
+    b = absoluto(b);
+
+    if (a == 0 && b == 0) {
+        printf("El MCD de cero y cero no esta definido.\n");
+        return 1;
+    }
+
+    resultado = mcd(a, b);
+
+    printf("MCD = %lld\n", resultado);
+
+    return 0;
+}
