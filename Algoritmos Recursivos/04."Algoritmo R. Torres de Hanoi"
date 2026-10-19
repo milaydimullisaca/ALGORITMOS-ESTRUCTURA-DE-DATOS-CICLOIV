@@ -1,0 +1,36 @@
+
+#include <stdio.h>
+
+void hanoi(int n, char origen, char auxiliar, char destino) {
+    if (n == 1) {
+        printf("Mover disco 1 de %c a %c\n", origen, destino);
+        return;
+    }
+
+    hanoi(n - 1, origen, destino, auxiliar);
+
+    printf("Mover disco %d de %c a %c\n",
+           n, origen, destino);
+
+    hanoi(n - 1, auxiliar, origen, destino);
+}
+
+int main(void) {
+    int n;
+
+    printf("TORRES DE HANOI RECURSIVAS\n");
+    printf("Ingrese la cantidad de discos (1 a 20): ");
+
+    if (scanf("%d", &n) != 1 || n < 1 || n > 20) {
+        printf("Cantidad no valida.\n");
+        return 1;
+    }
+
+    printf("\nMovimientos necesarios:\n");
+    hanoi(n, 'A', 'B', 'C');
+
+    printf("\nTotal de movimientos: %lld\n",
+           (1LL << n) - 1);
+
+    return 0;
+}
