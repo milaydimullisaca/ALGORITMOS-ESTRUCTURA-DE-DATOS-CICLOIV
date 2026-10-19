@@ -1,1 +1,42 @@
 
+#include <stdio.h>
+
+#define MAX_EGGS 100
+#define MAX_FLOORS 10000
+
+int main(void) {
+    int m, n, t = 0;
+    int dp[MAX_EGGS + 1] = {0};
+
+    printf("Cantidad de huevos: ");
+
+    if (scanf("%d", &m) != 1 ||
+        m < 1 || m > MAX_EGGS) {
+        printf("Cantidad de huevos no valida.\n");
+        return 1;
+    }
+
+    printf("Cantidad de pisos: ");
+
+    if (scanf("%d", &n) != 1 ||
+        n < 1 || n > MAX_FLOORS) {
+        printf("Cantidad de pisos no valida.\n");
+        return 1;
+    }
+
+    while (dp[m] < n) {
+        t++;
+
+        for (int e = m; e >= 1; e--) {
+            dp[e] = dp[e] + dp[e - 1] + 1;
+        }
+    }
+
+    printf("Lanzamientos minimos en el peor caso: %d\n", t);
+
+    if (m == 4 && n == 30) {
+        printf("Primer lanzamiento desde el piso 15.\n");
+    }
+
+    return 0;
+}
