@@ -1,0 +1,124 @@
+
+#include <stdio.h>
+
+#define MAXV 100
+#define MAXE 1000
+#define INF 1000000000
+
+typedef struct {
+    int origen;
+    int destino;
+    int peso;
+} Arista;
+
+int main() {
+    int V, E, origen;
+    Arista aristas[MAXE];
+    int dist[MAXV];
+    int i, j, cambio;
+
+    // Ingresar cantidad de vertices
+    printf("Cantidad de vertices: ");
+    scanf("%d", &V);
+
+    if (V < 1 || V > MAXV) {
+        printf("Cantidad de vertices no valida.\n");
+        return 1;
+    }
+
+    // Ingresar cantidad de aristas
+    printf("Cantidad de aristas: ");
+    scanf("%d", &E);
+
+    if (E < 0 || E > MAXE) {
+        printf("Cantidad de aristas no valida.\n");
+        return 1;
+    }
+
+    // Ingresar las aristas
+    for (i = 0; i < E; i++) {
+        printf("Arista %d (origen destino peso): ", i + 1);
+        scanf("%d %d %d",
+              &aristas[i].origen,
+              &aristas[i].destino,
+              &aristas[i].peso);
+
+        if (aristas[i].origen < 0 ||
+            aristas[i].origen >= V ||
+            aristas[i].destino < 0 ||
+            aristas[i].destino >= V) {
+
+            printf("Vertice no valido.\n");
+            return 1;
+        }
+    }
+
+    // Ingresar vertice de origen
+    printf("Vertice de origen (0 a %d): ", V - 1);
+    scanf("%d", &origen);
+
+    if (origen < 0 || origen >= V) {
+        printf("Vertice de origen no valido.\n");
+        return 1;
+    }
+
+    // Inicializar distancias
+    for (i = 0; i < V; i++) {
+        dist[i] = INF;
+    }
+
+    dist[origen] = 0;
+
+    // Relajacion de aristas
+    for (i = 1; i < V; i++) {
+        cambio = 0;
+
+        for (j = 0; j < E; j++) {
+            int u = aristas[j].origen;
+            int v = aristas[j].destino;
+            int w = aristas[j].peso;
+
+            if (dist[u] != INF &&
+                dist[u] + w < dist[v]) {
+
+                dist[v] = dist[u] + w;
+                cambio = 1;
+            }
+        }
+
+        // Terminar si no hubo actualizaciones
+        if (cambio == 0) {
+            break;
+        }
+    }
+
+    // Detectar ciclos de peso negativo
+    for (j = 0; j < E; j++) {
+        int u = aristas[j].origen;
+        int v = aristas[j].destino;
+        int w = aristas[j].peso;
+
+        if (dist[u] != INF &&
+            dist[u] + w < dist[v]) {
+
+            printf("\nExiste un ciclo de peso negativo "
+                   "alcanzable desde el origen.\n");
+
+            return 0;
+        }
+    }
+
+    // Mostrar resultados
+    printf("\nDistancias minimas desde el vertice %d:\n",
+           origen);
+
+    for (i = 0; i < V; i++) {
+        if (dist[i] == INF) {
+            printf("Vertice %d: Inalcanzable\n", i);
+        } else {
+            printf("Vertice %d: %d\n", i, dist[i]);
+        }
+    }
+
+    return 0;
+}
