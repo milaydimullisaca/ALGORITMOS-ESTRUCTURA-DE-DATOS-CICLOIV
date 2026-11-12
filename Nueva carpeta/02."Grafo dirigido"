@@ -1,0 +1,153 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class GrafoDirigido {
+private:
+    int vertices;
+    vector<vector<int>> matriz;
+
+public:
+    GrafoDirigido(int v) {
+        vertices = v;
+        matriz.resize(v, vector<int>(v, 0));
+    }
+
+    // INSERTAR una arista dirigida
+    void insertar(int origen, int destino) {
+        if (origen < 0 || origen >= vertices ||
+            destino < 0 || destino >= vertices) {
+            cout << "Vertices no validos.\n";
+            return;
+        }
+
+        if (matriz[origen][destino] == 1) {
+            cout << "La arista ya existe.\n";
+            return;
+        }
+
+        matriz[origen][destino] = 1;
+        cout << "Arista insertada correctamente.\n";
+    }
+
+    // BUSCAR una arista dirigida
+    void buscar(int origen, int destino) {
+        if (origen < 0 || origen >= vertices ||
+            destino < 0 || destino >= vertices) {
+            cout << "Vertices no validos.\n";
+            return;
+        }
+
+        if (matriz[origen][destino] == 1) {
+            cout << "La arista " << origen << " -> "
+                 << destino << " existe.\n";
+        } else {
+            cout << "La arista no existe.\n";
+        }
+    }
+
+    // ELIMINAR una arista dirigida
+    void eliminar(int origen, int destino) {
+        if (origen < 0 || origen >= vertices ||
+            destino < 0 || destino >= vertices) {
+            cout << "Vertices no validos.\n";
+            return;
+        }
+
+        if (matriz[origen][destino] == 0) {
+            cout << "La arista no existe.\n";
+            return;
+        }
+
+        matriz[origen][destino] = 0;
+        cout << "Arista eliminada correctamente.\n";
+    }
+
+    // MOSTRAR el grafo
+    void mostrar() {
+        cout << "\nMatriz de adyacencia:\n\n";
+
+        for (int i = 0; i < vertices; i++) {
+            for (int j = 0; j < vertices; j++) {
+                cout << matriz[i][j] << " ";
+            }
+            cout << endl;
+        }
+
+        cout << "\nAristas del grafo:\n";
+
+        for (int i = 0; i < vertices; i++) {
+            for (int j = 0; j < vertices; j++) {
+                if (matriz[i][j] == 1) {
+                    cout << i << " -> " << j << endl;
+                }
+            }
+        }
+    }
+};
+
+int main() {
+    int n, opcion, origen, destino;
+
+    cout << "===== GRAFO DIRIGIDO =====\n";
+    cout << "Ingrese la cantidad de vertices: ";
+    cin >> n;
+
+    if (n <= 0) {
+        cout << "Cantidad de vertices no valida.\n";
+        return 1;
+    }
+
+    GrafoDirigido grafo(n);
+
+    do {
+        cout << "\n===== MENU PRINCIPAL =====\n";
+        cout << "1. Insertar arista\n";
+        cout << "2. Buscar arista\n";
+        cout << "3. Eliminar arista\n";
+        cout << "4. Mostrar grafo\n";
+        cout << "5. Salir\n";
+        cout << "Seleccione una opcion: ";
+        cin >> opcion;
+
+        switch (opcion) {
+            case 1:
+                cout << "Ingrese vertice de origen: ";
+                cin >> origen;
+                cout << "Ingrese vertice de destino: ";
+                cin >> destino;
+                grafo.insertar(origen, destino);
+                break;
+
+            case 2:
+                cout << "Ingrese vertice de origen: ";
+                cin >> origen;
+                cout << "Ingrese vertice de destino: ";
+                cin >> destino;
+                grafo.buscar(origen, destino);
+                break;
+
+            case 3:
+                cout << "Ingrese vertice de origen: ";
+                cin >> origen;
+                cout << "Ingrese vertice de destino: ";
+                cin >> destino;
+                grafo.eliminar(origen, destino);
+                break;
+
+            case 4:
+                grafo.mostrar();
+                break;
+
+            case 5:
+                cout << "Programa finalizado.\n";
+                break;
+
+            default:
+                cout << "Opcion no valida.\n";
+        }
+
+    } while (opcion != 5);
+
+    return 0;
+}
